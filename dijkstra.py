@@ -1,5 +1,5 @@
 import math
-def dijkstra(grafo, origem):
+def dijkstra(grafo, origem, destino):
     dist = {}
     prev = {}
 
@@ -21,10 +21,26 @@ def dijkstra(grafo, origem):
         C = C | {u}
         O = O - {u}
 
+        if u == destino:
+            break
+
         for v, peso in grafo.vizinhos(u):
             if v not in C:
                 if (dist[v] > (dist[u] + peso)):
                     dist[v] = dist[u] + peso
                     prev[v] = u
+
+    caminho = []
+    atual = destino
+
+    if prev[atual] is None:
+        return None, math.inf
+    
+    while atual != origem:
+        caminho.append(atual)
+        atual = prev[atual]
+    
+    caminho.append(origem)
+    caminho.reverse()
                     
-    return dist, prev
+    return caminho, dist[destino]
